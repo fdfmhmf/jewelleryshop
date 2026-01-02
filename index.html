@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<!-- TOP ANNOUNCEMENT BAR -->
+<!-- TOP BAR -->
 <div class="top-bar">
   FREE JEWELLERY ORGANIZER WORTH ₹400 ON ORDERS ABOVE ₹1500
 </div>
@@ -18,20 +18,40 @@
   <div class="nav-left">🔍</div>
   <div class="nav-center">HANDMADE</div>
   <div class="nav-right">
-    <button id="darkToggle">🌙</button>
     <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero-salty">
-  <img src="hero.jpg" class="hero-img" alt="Hero" />
+<!-- HERO SLIDER -->
+<section class="hero-slider">
 
-  <div class="hero-text">
-    <span class="hero-sub">A La Carte</span>
-    <h1>JEWELLERY</h1>
-    <a href="#products" class="hero-btn">SHOP NOW</a>
+  <div class="hero-slide active">
+    <img src="hero1.jpg" />
+    <div class="hero-text">
+      <span>A La Carte</span>
+      <h1>JEWELLERY</h1>
+      <a href="#products">SHOP NOW</a>
+    </div>
   </div>
+
+  <div class="hero-slide">
+    <img src="hero2.jpg" />
+    <div class="hero-text">
+      <span>Handcrafted</span>
+      <h1>RINGS</h1>
+      <a href="#products">EXPLORE</a>
+    </div>
+  </div>
+
+</section>
+
+<!-- CATEGORY STRIPS -->
+<section class="categories">
+  <div class="cat">RINGS</div>
+  <div class="cat">NECKLACE</div>
+  <div class="cat">BRACELETS</div>
+  <div class="cat">EARRINGS</div>
+  <div class="cat">GIFTS</div>
 </section>
 
 <!-- PRODUCTS -->
@@ -43,10 +63,4 @@
 <!-- CART -->
 <div class="cart" id="cart">
   <h3>Your Cart</h3>
-  <div id="cartItems"></div>
-  <button id="orderBtn">Order on WhatsApp</button>
-</div>
-
-<script type="module" src="home.js"></script>
-</body>
-</html>
+  <div id="cartItems"></d
