@@ -39,47 +39,31 @@ body {
 .hero-slide {
   position: absolute;
   inset: 0;
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
   opacity: 0;
-  transition: opacity 1s ease;
+  transition: opacity 1s ease-in-out;
 }
 
 .hero-slide.active {
   opacity: 1;
 }
 
-.hero-slide img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+/* BACKGROUND IMAGES */
+.slide1 {
+  background-image: url("images/slide1.jpg");
 }
 
-.hero-text {
-  position: absolute;
-  top: 50%;
-  left: 8%;
-  transform: translateY(-50%);
-  color: white;
+.slide2 {
+  background-image: url("images/slide2.jpg");
 }
 
-.hero-text span {
-  font-style: italic;
-  font-size: 1.4rem;
+.slide3 {
+  background-image: url("images/slide3.jpg");
 }
-
-.hero-text h1 {
-  font-size: 6rem;
-  margin: 10px 0;
-  letter-spacing: 2px;
-}
-
-.hero-text a {
-  background: white;
-  color: black;
-  padding: 14px 32px;
-  text-decoration: none;
-  font-weight: 600;
-}
-
 /* CATEGORIES */
 .categories {
   display: flex;
