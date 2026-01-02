@@ -2,66 +2,28 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Golden Glow Jewelry</title>
+  <title>Handmade Jewelry Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header>
-    <h1>Golden Glow Jewelry</h1>
-    <nav>
-      <a href="#home">Home</a>
-      <a href="#shop">Shop</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
-  </header>
+<header>
+  <h1>✨ Handmade Jewelry Store</h1>
+  <p>Unique • Simple • Handmade</p>
+</header>
 
-  <section id="home" class="hero">
-    <h2>Elegant Jewelry for Every Moment</h2>
-    <p>Handcrafted rings, necklaces, and bracelets</p>
-    <button>Shop Now</button>
-  </section>
+<section class="upload-section">
+  <h2>Owner Upload Panel</h2>
+  <input type="file" id="imageInput" accept="image/*">
+  <input type="text" id="nameInput" placeholder="Item Name">
+  <input type="text" id="priceInput" placeholder="Price (₹)">
+  <button onclick="addItem()">Upload Item</button>
+</section>
 
-  <section id="shop" class="products">
-    <h2>Our Collection</h2>
+<section class="products" id="productList">
+  <h2>Our Collection</h2>
+</section>
 
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Ring">
-      <h3>Diamond Ring</h3>
-      <p>$250</p>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Necklace">
-      <h3>Gold Necklace</h3>
-      <p>$180</p>
-    </div>
-
-    <div class="product">
-      <img src="https://via.placeholder.com/200" alt="Bracelet">
-      <h3>Silver Bracelet</h3>
-      <p>$120</p>
-    </div>
-  </section>
-
-  <section id="about" class="about">
-    <h2>About Us</h2>
-    <p>
-      Golden Glow Jewelry creates timeless pieces with love and care.
-      Perfect for gifts or special occasions.
-    </p>
-  </section>
-
-  <section id="contact" class="contact">
-    <h2>Contact Us</h2>
-    <p>Email: info@goldenglow.com</p>
-    <p>Phone: +1 234 567 890</p>
-  </section>
-
-  <footer>
-    <p>© 2026 Golden Glow Jewelry</p>
-  </footer>
-
+<script src="script.js"></script>
 </body>
 </html>
