@@ -13,7 +13,7 @@ async function loadProducts() {
 
 function render(list) {
   grid.innerHTML = "";
-  list.forEach(p=>{
+  list.forEach(p => {
     grid.innerHTML += `
       <div class="card">
         <img src="${p.imageURL}">
@@ -25,16 +25,22 @@ function render(list) {
 }
 
 window.filterProducts = c =>
-  render(c==="all"?allProducts:allProducts.filter(p=>p.category===c));
+  render(c==="all" ? allProducts : allProducts.filter(p=>p.category===c));
 
 loadProducts();
 
+/* HERO SLIDER */
 const slides = document.querySelectorAll(".hero-slide");
-let current = 0;
-
+let i = 0;
 setInterval(() => {
-  slides[current].classList.remove("active");
-  current = (current + 1) % slides.length;
-  slides[current].classList.add("active");
+  slides[i].classList.remove("active");
+  i = (i + 1) % slides.length;
+  slides[i].classList.add("active");
 }, 5000);
 
+/* PARALLAX */
+window.addEventListener("scroll", () => {
+  document.querySelectorAll(".floating-shape").forEach(s => {
+    s.style.transform = `translateY(${window.scrollY * 0.05}px)`;
+  });
+});
