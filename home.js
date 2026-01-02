@@ -29,11 +29,12 @@ window.filterProducts = c =>
 
 loadProducts();
 
-// hero animation
-const slides=document.querySelectorAll(".hero-slide");
-let i=0;
-setInterval(()=>{
-  slides[i].classList.remove("active");
-  i=(i+1)%slides.length;
-  slides[i].classList.add("active");
-},4000);
+const slides = document.querySelectorAll(".hero-slide");
+let current = 0;
+
+setInterval(() => {
+  slides[current].classList.remove("active");
+  current = (current + 1) % slides.length;
+  slides[current].classList.add("active");
+}, 5000);
+
