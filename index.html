@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Handmade Jewelry</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -10,44 +11,33 @@
 <header class="navbar">
   <div class="logo">✨ Handmade</div>
   <nav>
-    <a href="#">Home</a>
-    <a href="#products">Shop</a>
+    <button id="darkToggle">🌙</button>
+    <button id="cartBtn">🛒 <span id="cartCount">0</span></button>
   </nav>
 </header>
 
 <section class="hero">
-
-  <!-- Floating shapes -->
   <div class="floating-shape shape1"></div>
   <div class="floating-shape shape2"></div>
-  <div class="floating-shape shape3"></div>
 
   <div class="hero-slide active">
     <h1>Handcrafted Jewelry</h1>
     <p>Minimal • Elegant • Timeless</p>
     <a href="#products">Shop Now</a>
   </div>
-
-  <div class="hero-slide">
-    <h1>Inspired by Art</h1>
-    <p>Every piece tells a story</p>
-    <a href="#products">Explore</a>
-  </div>
-
 </section>
 
 <section class="products" id="products">
   <h2>Featured Collection</h2>
-
-  <div class="filters">
-    <button class="active" onclick="filterProducts('all')">All</button>
-    <button onclick="filterProducts('ring')">Rings</button>
-    <button onclick="filterProducts('necklace')">Necklace</button>
-    <button onclick="filterProducts('bracelet')">Bracelet</button>
-  </div>
-
   <div class="grid" id="productGrid"></div>
 </section>
+
+<!-- CART DRAWER -->
+<div class="cart" id="cart">
+  <h3>Your Cart</h3>
+  <div id="cartItems"></div>
+  <button id="orderBtn">Order on WhatsApp</button>
+</div>
 
 <script type="module" src="home.js"></script>
 </body>
