@@ -2,28 +2,31 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Handmade Jewelry Store</title>
+  <title>✨ Handmade Jewelry Store</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-  <h1>✨ Handmade Jewelry Store</h1>
-  <p>Unique • Simple • Handmade</p>
-</header>
-
-<section class="upload-section">
-  <h2>Owner Upload Panel</h2>
-  <input type="file" id="imageInput" accept="image/*">
-  <input type="text" id="nameInput" placeholder="Item Name">
-  <input type="text" id="priceInput" placeholder="Price (₹)">
-  <button onclick="addItem()">Upload Item</button>
+<!-- Hero Banner -->
+<section class="hero">
+  <div class="hero-slide active">
+    <h1>Beautiful Handmade Jewelry</h1>
+    <p>Crafted with passion ❤️</p>
+    <a href="#products">Shop Now</a>
+  </div>
+  <div class="hero-slide">
+    <h1>Unique & Elegant Designs</h1>
+    <p>Wear your story</p>
+    <a href="#products">Explore</a>
+  </div>
 </section>
 
-<section class="products" id="productList">
-  <h2>Our Collection</h2>
+<!-- Featured Products -->
+<section id="products" class="products">
+  <h2>✨ Featured Collection</h2>
+  <div class="grid" id="productGrid"></div>
 </section>
 
-<script src="script.js"></script>
+<script src="home.js" type="module"></script>
 </body>
 </html>
