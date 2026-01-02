@@ -24,7 +24,7 @@ body {
   top: 0;
   z-index: 1000;
   background: rgba(255,255,255,0.9);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   display: flex;
   justify-content: space-between;
   padding: 14px 40px;
@@ -44,10 +44,11 @@ body {
   overflow: hidden;
 }
 
-/* Each slide */
 .hero-slide {
   position: absolute;
   inset: 0;
+  z-index: 1;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -55,73 +56,114 @@ body {
   text-align: center;
 
   background: rgba(255,255,255,0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
 
-  border-radius: 0;
   opacity: 0;
   transform: scale(1.05);
   transition: opacity 1.2s ease, transform 1.2s ease;
-  z-index: 1;
 }
 
-/* ACTIVE SLIDE */
 .hero-slide.active {
   opacity: 1;
   transform: scale(1);
 }
 
-/* Slide content */
 .hero-slide h1 {
   font-size: 3rem;
-  color: #3a2d2d;
-  margin-bottom: 10px;
+  color: var(--dark);
 }
 
 .hero-slide p {
-  font-size: 1.1rem;
-  margin-bottom: 20px;
   opacity: 0.8;
 }
 
 .hero-slide a {
   padding: 12px 30px;
   border-radius: 30px;
-  background: #b76e79;
+  background: var(--primary);
   color: white;
   text-decoration: none;
-  font-weight: 500;
-  transition: transform 0.3s ease;
 }
 
-.hero-slide a:hover {
-  transform: translateY(-2px);
+/* GRADIENT BACKGROUNDS */
+.hero-slide:nth-child(4) {
+  background: linear-gradient(135deg, #fff1f3, #fdeff4);
+}
+.hero-slide:nth-child(5) {
+  background: linear-gradient(135deg, #fdf6ec, #fffaf0);
 }
 
-
-/* Gradient backgrounds per slide */
-.hero-slide:nth-child(1) {
-  background: linear-gradient(
-    135deg,
-    #fff1f3,
-    #fdeff4
-  );
+/* FLOATING SHAPES */
+.floating-shape {
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: float 12s ease-in-out infinite;
+  z-index: 0;
 }
 
-.hero-slide:nth-child(2) {
-  background: linear-gradient(
-    135deg,
-    #fdf6ec,
-    #fffaf0
-  );
+.shape1 { background: #f5cfd6; top: 10%; left: -80px; }
+.shape2 { background: #fde3c8; bottom: 10%; right: -80px; animation-delay: 3s; }
+.shape3 { background: #e1e8ff; top: 50%; right: 20%; animation-delay: 6s; }
+
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-40px); }
 }
 
-/* Optional third slide later */
-.hero-slide:nth-child(3) {
-  background: linear-gradient(
-    135deg,
-    #f1f6ff,
-    #eef2ff
-  );
+/* PRODUCTS */
+.products {
+  padding: 40px;
+  text-align: center;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 18px;
+  padding: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 14px;
+}
+
+/* FILTERS */
+.filters button {
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  background: #eee;
+  cursor: pointer;
+}
+.filters button.active {
+  background: var(--primary);
+  color: white;
+}
+
+/* GRAIN */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
+  z-index: 9999;
+}
