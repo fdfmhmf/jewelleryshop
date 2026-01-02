@@ -78,33 +78,40 @@ body {
   border-radius:12px;
 }
 .card button {
-  width:100%;
-  margin-top:8px;
-  padding:10px;
-  border:none;
-  border-radius:20px;
-  background:var(--primary);
-  color:white;
+  margin-top: 12px;
+  width: 100%;
+  padding: 14px 16px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+
+  border: none;
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    var(--primary),
+    #d48a95
+  );
+  color: white;
+
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* CART */
-.cart {
-  position:fixed;
-  right:-100%;
-  top:0;
-  width:100%;
-  max-width:360px;
-  height:100%;
-  background:var(--bg);
-  box-shadow:-10px 0 30px rgba(0,0,0,.2);
-  padding:20px;
-  transition:.3s;
-}
-.cart.show {
-  right:0;
+/* Hover / tap effect */
+.card button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(183,110,121,0.35);
 }
 
-/* MOBILE */
-@media(max-width:600px){
-  .hero h1 {font-size:1.8rem;}
+/* Mobile tap feedback */
+.card button:active {
+  transform: scale(0.97);
 }
