@@ -1,0 +1,52 @@
+/* Simple responsive styles */
+:root{
+  --accent:#b87333;
+  --muted:#666;
+  --bg:#f8f7f5;
+  --card:#fff;
+  --max-width:1100px;
+  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:#222}
+.container{max-width:var(--max-width);margin:0 auto;padding:1rem}
+
+.site-header{background:#fff;border-bottom:1px solid #eee}
+.header-inner{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem}
+.brand{margin:0;color:var(--accent)}
+.nav{display:flex;gap:0.5rem;align-items:center}
+#search{padding:0.5rem;border:1px solid #ddd;border-radius:6px}
+.cart-btn{background:var(--accent);color:#fff;border:none;padding:0.5rem 0.75rem;border-radius:6px;cursor:pointer}
+
+.hero{text-align:center;padding:2rem 1rem;margin:1rem 0;background:linear-gradient(90deg,rgba(184,115,51,0.06),transparent);border-radius:8px}
+.hero h2{margin:0 0 0.25rem}
+
+.filters{display:flex;gap:1rem;align-items:center;padding:0.5rem 0}
+.filters label{font-size:0.9rem;color:var(--muted)}
+
+.product-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;padding:1rem 0}
+.card{background:var(--card);border-radius:8px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,0.04);display:flex;flex-direction:column}
+.card img{width:100%;height:160px;object-fit:cover;background:#eee}
+.card-body{padding:0.75rem;flex:1;display:flex;flex-direction:column}
+.card h4{margin:0 0 0.25rem;font-size:1rem}
+.card p{margin:0 0.5rem;color:var(--muted);font-size:0.9rem}
+.card .price{margin-top:auto;font-weight:600;color:var(--accent)}
+.card .actions{display:flex;gap:0.5rem;margin-top:0.5rem}
+.btn{background:var(--accent);color:#fff;padding:0.45rem 0.6rem;border:none;border-radius:6px;cursor:pointer}
+.btn.secondary{background:#eee;color:#222}
+
+.site-footer{padding:1rem 0;text-align:center;color:var(--muted);margin-top:2rem}
+
+/* Modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.4);padding:1rem}
+.modal[aria-hidden="false"]{display:flex}
+.modal-content{background:#fff;border-radius:8px;max-width:900px;width:100;display:flex;gap:1rem;overflow:hidden}
+.modal img{width:50%;height:100%;object-fit:cover}
+.modal-info{padding:1rem;flex:1}
+.modal-close{position:absolute;right:1rem;top:1rem;background:transparent;border:none;font-size:1.5rem;cursor:pointer}
+
+@media (max-width:720px){
+  .modal-content{flex-direction:column}
+  .modal img{width:100%;height:220px}
+}
