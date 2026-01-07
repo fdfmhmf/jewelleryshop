@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <div class="view active" style="max-width: 800px; margin-top: 50px;">
+        <h1 style="font-size:2.5rem; font-weight:700; margin-bottom:40px; color:#1d1d1f;">Dashboard</h1>
+        
+        <div class="admin-card">
+            <h3>Add New Product</h3>
+            <form id="add-form">
+                <label style="font-size:0.8rem; color:#888; display:block; margin-bottom:5px;">Product Name</label>
+                <input type="text" id="name" placeholder="e.g. Kundan Necklace" required>
+                
+                <label style="font-size:0.8rem; color:#888; display:block; margin-bottom:5px;">Price (₹)</label>
+                <input type="number" id="price" placeholder="e.g. 4999" required>
+                
+                <label style="font-size:0.8rem; color:#888; display:block; margin-bottom:5px;">Description</label>
+                <textarea id="desc" placeholder="Describe the product details, material, and care instructions..." required></textarea>
+
+                <label style="font-size:0.8rem; color:#888; display:block; margin-bottom:5px;">Product Image</label>
+                <input type="file" id="img-file" accept="image/*" required>
+                
+                <button type="submit" class="btn-ios" style="margin-top:20px; width:100%;">Publish Item</button>
+            </form>
+        </div>
+
+        <div class="admin-card">
+            <h3>Inventory</h3>
+            <div id="admin-list" style="margin-top:20px;"></div>
+        </div>
+
+        <a href="index.html" style="display:block; text-align:center; margin:50px 0; color:#0071e3; text-decoration:none;">Go to Live Store →</a>
+    </div>
+
+    <script type="module">
+        import { loadProducts, productsCollection, addDoc, deleteDoc, doc, db } from './app.js';
+
+        // Load existing products
+        loadProducts('admin-list', true);
+
+        // FORM SUBMIT LOGIC
+        document.getElementById('add-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            btn.innerText = "Processing Image...";
+            btn.disabled = true;
+
+            const name = document.getElementById('name').value;
+            const price = Number(document.getElementById('price').value);
+            const desc = document.getElementById('desc').value;
+            const fileInput = document.getElementById('img-file');
+
+            if (fileInput.files.length === 0) {
+                alert("Please select an image");
+                btn.innerText = "Publish Item";
+                btn.disabled = false;
+                return;
+            }
+
+            try {
+                // 1. Resize and Convert Image to Base64
+                const imageBase64 = await resizeImage(fileInput.files[0]);
+
+                // 2. Save to Firebase
+                btn.innerText = "Uploading...";
+                await addDoc(productsCollection, {
+                    name: name,
+                    price: price,
+                    description: desc,
+                    image: imageBase64, // Saving the image data string directly
+                    createdAt: Date.now()
+                });
+
+                alert("Product Published Successfully!");
+                e.target.reset();
+                loadProducts('admin-list', true); // Reload list
+
+            } catch(err) {
+                console.error(err);
+                alert("Error: " + err.message);
+            } finally {
+                btn.innerText = "Publish Item";
+                btn.disabled = false;
+            }
+        });
+
+        // Delete Logic
+        window.deleteItem = async (id) => {
+            if(confirm("Permanently delete this item?")) {
+                try {
+                    await deleteDoc(doc(db, "products", id));
+                    loadProducts('admin-list', true);
+                } catch(err) { console.error(err); }
+            }
+        };
+
+        // --- IMAGE COMPRESSION HELPER ---
+        // This prevents the "Quota Exceeded" error by shrinking images before saving
+        function resizeImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 800; // Shrink to 800px width
+                        const scaleSize = MAX_WIDTH / img.width;
+                        canvas.width = MAX_WIDTH;
+                        canvas.height = img.height * scaleSize;
+
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        
+                        // Convert to JPEG at 70% quality
+                        resolve(canvas.toDataURL('image/jpeg', 0.7)); 
+                    };
+                    img.onerror = (err) => reject(err);
+                };
+            });
+        }
+    </script>
+</body>
+</html>

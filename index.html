@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>She's Style</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo" onclick="switchView('home')">She's Style</div>
+        <div class="nav-icons">
+            <div class="icon-btn" onclick="switchView('home')"><i class="ri-search-line"></i></div>
+            <div class="icon-btn relative" onclick="toggleCart()">
+                <i class="ri-shopping-bag-line"></i>
+                <span id="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <main id="app-container">
+        <section id="view-home" class="view active">
+            <header class="hero">
+                <h1>Jewellery</h1>
+                <p>The best way to buy the jewellery you love.</p>
+            </header>
+            <div id="product-grid" class="grid"></div>
+        </section>
+
+        <section id="view-product" class="view">
+            <button class="back-btn" onclick="switchView('home')">‹ All Products</button>
+            <div class="detail-container">
+                <div class="detail-img"><img id="d-img" src=""></div>
+                <div class="detail-info">
+                    <h1 id="d-name">Product Name</h1>
+                    <h2 id="d-price" style="color:#000;">₹0.00</h2> <hr style="border:0; border-top:1px solid #eee; margin:20px 0;">
+                    
+                    <h4 style="font-size:0.9rem; color:#888; margin-bottom:10px; text-transform:uppercase;">Description</h4>
+                    <p id="d-desc" class="desc">Loading description...</p>
+                    
+                    <button class="btn-ios" id="add-btn">Add to Bag</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
+    <aside id="cart-sidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h2>Bag</h2>
+            <button onclick="toggleCart()" style="background:none;border:none;font-size:1.5rem;cursor:pointer;">✕</button>
+        </div>
+        <div id="cart-items" class="cart-list"></div>
+        <div class="cart-footer">
+            <div class="row"><span>Total</span><span id="cart-total">₹0.00</span></div>
+            <button class="btn-ios full">Check Out</button>
+        </div>
+    </aside>
+
+    <script type="module">
+        import { productsCollection, getDocs } from './app.js';
+
+        // Load Products with INR symbol
+        async function loadProducts() {
+            const container = document.getElementById('product-grid');
+            container.innerHTML = '<div style="color:#888; text-align:center;">Loading Collection...</div>';
+            try {
+                const snapshot = await getDocs(productsCollection);
+                container.innerHTML = '';
+                if(snapshot.empty) { container.innerHTML = '<p>No items found.</p>'; return; }
+                
+                snapshot.forEach(doc => {
+                    const data = doc.data();
+                    const id = doc.id;
+                    const card = document.createElement('div');
+                    card.className = 'card';
+                    // Pass description to openProductDetail
+                    card.onclick = () => window.openProductDetail({id, ...data});
+                    
+                    card.innerHTML = `
+                        <img src="${data.image}" loading="lazy">
+                        <div class="card-info">
+                            <h3>${data.name}</h3>
+                            <p>₹${data.price}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch(e) { console.error(e); }
+        }
+        loadProducts();
+
+        // Standard Logic
+        window.switchView = (viewName) => {
+            document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            window.scrollTo(0,0);
+        };
+        window.toggleCart = () => {
+            document.getElementById('cart-sidebar').classList.toggle('open');
+            document.getElementById('cart-overlay').classList.toggle('open');
+        };
+
+        // OPEN DETAIL (Updated for Description)
+        window.openProductDetail = (product) => {
+            document.getElementById('d-img').src = product.image;
+            document.getElementById('d-name').innerText = product.name;
+            document.getElementById('d-price').innerText = `₹${product.price}`;
+            
+            // Show Description (or default text if missing)
+            document.getElementById('d-desc').innerText = product.description || "No description available for this item.";
+            
+            document.getElementById('add-btn').onclick = () => { addToCart(product); window.toggleCart(); };
+            switchView('product');
+        };
+
+        // Cart Logic
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        updateCartUI();
+        function addToCart(product) { cart.push(product); saveCart(); }
+        window.removeCartItem = (index) => { cart.splice(index, 1); saveCart(); };
+        function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartUI(); }
+        
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+            let total = 0;
+            if(cart.length === 0) container.innerHTML = '<div style="color:#999; text-align:center; margin-top:50px;">Your bag is empty.</div>';
+            
+            cart.forEach((item, index) => {
+                total += Number(item.price);
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <img src="${item.image}">
+                        <div class="c-info">
+                            <b>${item.name}</b>
+                            <small>₹${item.price}</small>
+                            <button class="c-remove" onclick="window.removeCartItem(${index})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('cart-total').innerText = `₹${total}`;
+        }
+    </script>
+</body>
+</html>
