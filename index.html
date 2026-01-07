@@ -9,18 +9,17 @@
 </head>
 <body>
 
-    <div id="search-bar" class="search-overlay">
-        <div class="search-input-wrapper">
-            <i class="ri-search-line search-icon-inside"></i>
-            <input type="text" id="search-input" class="search-input" placeholder="Search products...">
-        </div>
-        <button class="search-cancel" onclick="toggleSearch()">Cancel</button>
-    </div>
-
     <nav class="navbar">
         <div class="logo" onclick="switchView('home')">She's Style</div>
+        
         <div class="nav-icons">
-            <div class="icon-btn" onclick="toggleSearch()"><i class="ri-search-line"></i></div>
+            <div class="search-wrapper" id="search-box">
+                <button class="search-trigger" onclick="toggleSearch()">
+                    <i class="ri-search-line"></i>
+                </button>
+                <input type="text" id="search-input" class="search-input-inline" placeholder="Search...">
+            </div>
+
             <div class="icon-btn relative" onclick="toggleCart()">
                 <i class="ri-shopping-bag-line"></i>
                 <span id="cart-count">0</span>
@@ -31,7 +30,7 @@
     <main id="app-container">
         <section id="view-home" class="view active">
             <header class="hero">
-                <h1>Store.</h1>
+                <h1>Jewellery Store</h1>
                 <p>The best way to buy the jewellery you love.</p>
             </header>
             <div id="product-grid" class="grid"></div>
@@ -69,10 +68,9 @@
     <script type="module">
         import { productsCollection, getDocs } from './app.js';
 
-        // Global variable to store all products for searching
         let allProductsData = [];
 
-        // 1. Fetch & Store Products
+        // 1. Fetch & Store
         async function loadProducts() {
             const container = document.getElementById('product-grid');
             container.innerHTML = '<div style="color:#888; text-align:center;">Loading...</div>';
@@ -82,29 +80,24 @@
                 
                 if(snapshot.empty) { container.innerHTML = '<p>No items found.</p>'; return; }
                 
-                // Save to global array
                 allProductsData = [];
                 snapshot.forEach(doc => {
                     allProductsData.push({ id: doc.id, ...doc.data() });
                 });
 
-                // Render all initially
                 renderGrid(allProductsData);
-
             } catch(e) { console.error(e); }
         }
         loadProducts();
 
-        // 2. Render Grid Function (Used for Init and Search)
+        // 2. Render
         function renderGrid(products) {
             const container = document.getElementById('product-grid');
-            container.innerHTML = ''; // Clear current grid
-
+            container.innerHTML = '';
             if(products.length === 0) {
                 container.innerHTML = '<p style="text-align:center; grid-column:1/-1; color:#888;">No products found.</p>';
                 return;
             }
-
             products.forEach(data => {
                 const card = document.createElement('div');
                 card.className = 'card';
@@ -121,29 +114,37 @@
             });
         }
 
-        // 3. SEARCH LOGIC
+        // 3. NEW SEARCH LOGIC (Inline Expansion)
         window.toggleSearch = () => {
-            const bar = document.getElementById('search-bar');
-            bar.classList.toggle('active');
+            const wrapper = document.getElementById('search-box');
+            const input = document.getElementById('search-input');
             
-            // Auto focus input when opening
-            if(bar.classList.contains('active')) {
-                document.getElementById('search-input').focus();
+            wrapper.classList.toggle('active');
+            
+            if(wrapper.classList.contains('active')) {
+                input.focus();
             } else {
-                // Reset search when closing
-                document.getElementById('search-input').value = '';
-                renderGrid(allProductsData);
+                // If closing, clear search
+                input.value = '';
+                renderGrid(allProductsData); // Reset grid
+                input.blur();
             }
         };
 
-        // Filter as you type
+        // Search Typing Listener
         document.getElementById('search-input').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const filtered = allProductsData.filter(p => p.name.toLowerCase().includes(term));
+            
+            // If user searches while on Detail page, go back to Home
+            if(document.getElementById('view-product').classList.contains('active')) {
+                switchView('home');
+            }
+            
             renderGrid(filtered);
         });
 
-        // 4. NAVIGATION & DETAILS
+        // 4. Navigation
         window.switchView = (viewName) => {
             document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
             document.getElementById(`view-${viewName}`).classList.add('active');
@@ -158,25 +159,22 @@
             document.getElementById('d-name').innerText = product.name;
             document.getElementById('d-price').innerText = `₹${product.price}`;
             document.getElementById('d-desc').innerText = product.description || "No description.";
-            
             document.getElementById('add-btn').onclick = () => { addToCart(product); window.toggleCart(); };
             switchView('product');
         };
 
-        // 5. CART LOGIC
+        // 5. Cart
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         updateCartUI();
         function addToCart(product) { cart.push(product); saveCart(); }
         window.removeCartItem = (index) => { cart.splice(index, 1); saveCart(); };
         function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartUI(); }
-        
         function updateCartUI() {
             document.getElementById('cart-count').innerText = cart.length;
             const container = document.getElementById('cart-items');
             container.innerHTML = '';
             let total = 0;
             if(cart.length === 0) container.innerHTML = '<div style="color:#999; text-align:center; margin-top:50px;">Your bag is empty.</div>';
-            
             cart.forEach((item, index) => {
                 total += Number(item.price);
                 container.innerHTML += `
